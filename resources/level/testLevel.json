@@ -1,0 +1,17 @@
+{
+  "levelName": "testlevel",
+  "playerSpeed": 10,
+  "theme": "blue",
+  "obstacles": {
+    "first": {
+      "spaceFromTop": 10,
+      "spaceFromBottom": 25,
+      "distanceToNext": 500
+    },
+    "second": {
+      "spaceFromTop": 99,
+      "spaceFromBottom": 88,
+      "distanceToNext": 390
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "width": 600,
+  "height": 500,
+  "title": "Flappy Bird",
+  "playerTheme": "blue",
+  "obstacleTheme": "green"
+}
