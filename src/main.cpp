@@ -18,7 +18,7 @@ int main() {
 
     Image windowIcon = LoadImage("resources/desktopIcon.png");
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird by nimbl0");
     SetWindowIcon(windowIcon);
     SetTargetFPS(50);
 
