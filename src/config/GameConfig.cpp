@@ -9,24 +9,14 @@ GameConfig::GameConfig(std::string _path) {
     read();
 }
 
-void GameConfig::init() {
-    std::fstream reader;
-    reader.open(path);
-
-    std::string line;
-    std::string delimiter("=");
-
-    while(getline(reader, line)) {
-        std::string key(line.substr(0, line.find(delimiter)));
-        std::string value(line.substr(line.find(delimiter)+1, line.size()));
-        values[key] = value;
-    }
-
+void GameConfig::read() {
+    std::ifstream reader(path);
+    reader >> values;
     reader.close();
 }
 
-void GameConfig::read() {
-    std::ifstream reader(path);
+void GameConfig::read(std::string _path) {
+    std::ifstream reader(_path);
     reader >> values;
     reader.close();
 }

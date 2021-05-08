@@ -1,80 +1,41 @@
 #include "raylib.h"
-#include "elements/obstacles/ObstacleManager.h"
+#include "logger/Logger.h"
+#include "game/Game.h"
+#include "config/GameConfig.h"
 #include "elements/Player.h"
-
-#define SCREEN_WIDTH 600
-#define SCREEN_HEIGHT 500
-
-bool paused = false;
-
-void gameOver() {
-    paused = true;
-    DrawText("GAME OVER", SCREEN_WIDTH/2 - 50, SCREEN_HEIGHT/2, 25, BLACK);
-}
+#include "camera/NimbleCamera.h"
 
 int main() {
     Logger::path = "Game.log";
     Logger::clearLogger();
 
-    Image windowIcon = LoadImage("resources/desktopIcon.png");
+    GameConfig::read("resources/gameConfig/gameConfig.json");
+    Game game;
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird by nimbl0");
-    SetWindowIcon(windowIcon);
-    SetTargetFPS(50);
+    // std::string _texPath, std::string _soundPath, Vector2 _pos, Color _color
+    Player player("resources/bird.png", "resources/blub.wav", Vector2{220, 50}, BLACK);
 
-    Player player("resources/bird.png",
-                  "resources/blub.wav",
-                  Vector2{50, 50},
-                  Vector2{0, 100},
-                  GRAY);
+    // float _posX, Vector2 _yPosses, std::string _upperTexturePath, std::string _lowerTexturePath, Color _color
+    Obstacle o(game.window.width - 50, {-100, 400}, "resources/pipe-green-reversed.png", "resources/pipe-green.png", GREEN);
+    o.initTexturePositions();
 
-    ObstacleManager::createObstacle(
-            400,
-            Vector2{-100, 400},
-            "resources/pipe-green-reversed.png",
-            "resources/pipe-green.png",
-            GREEN);
-
-    int scoreCount = 0;
-    int otherScoureCount = 0;
+    NimbleCamera camera;
     while(!WindowShouldClose()) {
+        camera.follow(player, game.window.width, game.window.height);
+
         BeginDrawing();
+        game.window.backgroundColor(GRAY);
 
-        if(IsKeyPressed(KEY_P)) {
-            paused = !paused;
-        }
-
-        if(player.collides()) {
-            gameOver();
-        }
-
-        if(player.scores()) {
-            otherScoureCount++;
-            if(otherScoureCount == 8) {
-                scoreCount++;
-                otherScoureCount = 0;
-            }
-        }
-
-        std::string score("Score: ");
-        score.append(std::to_string(scoreCount));
-        DrawText(score.c_str(), 50, 10, 20, BLACK);
-
-        if(!paused) {
-            // update
+        BeginMode2D(camera.cam);
+            o.render();
             player.update();
-            ObstacleManager::update(-5);
-            ObstacleManager::createNew();
-        }
+            player.render();
+        EndMode2D();
 
-        // render
-        player.render();
-        ObstacleManager::render();
-        ClearBackground(GRAY);
         EndDrawing();
     }
 
-    CloseWindow();
+    game.window.dispatch();
 
     return 0;
 }

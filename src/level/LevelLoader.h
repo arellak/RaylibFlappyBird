@@ -6,14 +6,16 @@
 #define RAYLIBB_LEVELLOADER_H
 
 #include "Level.h"
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 #include <vector>
 #include <filesystem>
 #include <string>
 #include <fstream>
 #include "../config/GameConfig.h"
+#include "LevelManager.h"
 
 class LevelLoader {
+public:
     std::vector<Level> level;
 
     void load(std::string name);

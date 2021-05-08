@@ -5,16 +5,13 @@
 #include "NimbleCamera.h"
 
 NimbleCamera::NimbleCamera() {
-
+    // width = GameConfig::values.at("width");
+    // height = GameConfig::values.at("height");
 }
 
-void NimbleCamera::init() {
-
-}
-
-void NimbleCamera::follow(Player player, int width, int height) {
-    cam.target = (Vector2) {player.pos.x, (float) height/2};
-    cam.offset = (Vector2) {(float) width/2, (float) height/2};
+void NimbleCamera::follow(Player _player, float width, float height) {
+    cam.target = (Vector2) {_player.pos.x + 20, _player.pos.y + 20};
+    cam.offset = (Vector2) {width/2.0f, height/2.0f};
     cam.rotation = 0.0f;
     cam.zoom = 1.0f;
 }

@@ -30,12 +30,15 @@ public:
 
     Vector2 curveVector;
 
-    const int MAX_VELOCITY = 24;
+    int MAX_VELOCITY = 24;
 
     NimbleTexture createTexture();
 
-    Player(NimbleTexture _texture, NimbleSound _sound, Vector2 _size, Vector2 _pos, Color _color);
-    Player(std::string _texPath, std::string _soundPath, Vector2 _size, Vector2 _pos, Color _color);
+    Player();
+    Player(NimbleTexture _texture, NimbleSound _sound, Vector2 _pos, Color _color);
+    Player(std::string _texPath, std::string _soundPath, Vector2 _pos, Color _color);
+
+    void init(std::string _texPath, std::string _soundPath, Vector2 _pos, Color _color);
 
     void moveX();
     void moveY();

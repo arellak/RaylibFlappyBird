@@ -18,8 +18,9 @@ public:
     float speed;
     std::string theme;
     std::vector<Obstacle> obstacles;
+    float obstacleSpace;
 
-    Level();
+    void render();
 };
 
 

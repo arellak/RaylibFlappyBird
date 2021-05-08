@@ -6,21 +6,19 @@
 #define RAYLIBB_GAMECONFIG_H
 
 #include <fstream>
-#include <map>
 #include <string>
-#include "json.hpp"
-#include <any>
+#include "nlohmann/json.hpp"
 
 class GameConfig {
 public:
     std::string path;
-    // static inline std::map<std::string, std::any> values;
     static inline nlohmann::json values;
 
+    GameConfig();
     GameConfig(std::string _path);
 
     void read();
-    void init();
+    static void read(std::string path);
 };
 
 
