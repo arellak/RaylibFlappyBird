@@ -16,7 +16,7 @@ public:
 
     Game();
     void init();
-    void showLevel();
+    void loadLevel(Level _level);
 };
 
 

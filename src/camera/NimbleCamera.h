@@ -7,14 +7,16 @@
 
 #include "raylib.h"
 #include "../elements/Player.h"
+#include "../config/GameConfig.h"
 
 class NimbleCamera {
 public:
     Camera2D cam;
+    // float width;
+    // float height;
 
     NimbleCamera();
-    void init();
-    void follow(Player player, int width, int height);
+    void follow(Player _player, float width, float height);
 };
 
 

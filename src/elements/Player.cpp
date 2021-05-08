@@ -5,7 +5,11 @@
 #include "Player.h"
 #include "obstacles/ObstacleManager.h"
 
-Player::Player(NimbleTexture _texture, NimbleSound _sound, Vector2 _size, Vector2 _pos, Color _color) {
+Player::Player() {
+
+}
+
+Player::Player(NimbleTexture _texture, NimbleSound _sound, Vector2 _pos, Color _color) {
     texture = _texture;
     size = Vector2{(float) texture.texture.width, (float) texture.texture.height};
     pos = _pos;
@@ -17,11 +21,16 @@ Player::Player(NimbleTexture _texture, NimbleSound _sound, Vector2 _size, Vector
     sound = _sound;
 }
 
-Player::Player(std::string _texPath, std::string _soundPath, Vector2 _size, Vector2 _pos, Color _color) {
+Player::Player(std::string _texPath, std::string _soundPath, Vector2 _pos, Color _color) {
+    init(_texPath, _soundPath, _pos, _color);
+}
+
+
+void Player::init(std::string _texPath, std::string _soundPath, Vector2 _pos, Color _color) {
     texturePath = _texPath;
+    pos = _pos;
     texture = createTexture();
     size = Vector2{(float) texture.texture.width, (float) texture.texture.height};
-    pos = _pos;
     color = _color;
 
     velocity = Vector2{0, 0};
@@ -53,11 +62,13 @@ void Player::move() {
 void Player::curveY(float _size) {
     curveVector.y += _size;
     pos.y -= curveVector.y;
+    texture.pos.y -= curveVector.y;
 }
 
 void Player::curveX(float _size) {
     curveVector.x += _size;
     pos.x += curveVector.x;
+    texture.pos.x += curveVector.x;
 }
 
 void Player::curve(Vector2 _curveVector, float sizeX, float sizeY) {
@@ -141,7 +152,7 @@ void Player::brakeDownwards() {
 
 void Player::update() {
     applyGravitation();
-    curve(Vector2{2.0f, 18.5f}, -0.05f, -0.5f);
+    curve(Vector2{5.0f, 18.5f}, -0.025f, -0.5f);
     resetPos();
 }
 
@@ -165,8 +176,8 @@ void Player::resetPos() {
     if(IsKeyPressed(KEY_LEFT_CONTROL)) {
         velocity = Vector2{0, 0};
         pos = Vector2{0, 400};
+        texture.pos = Vector2{pos.x, pos.y};
     }
-    texture.pos = Vector2{pos.x, pos.y};
 }
 
 void Player::render() {

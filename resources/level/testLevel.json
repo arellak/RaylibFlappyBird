@@ -1,7 +1,7 @@
 {
   "levelName": "testlevel",
   "playerSpeed": 10,
-  "theme": "blue",
+  "obstacleSpace": 100,
   "obstacles": {
     "first": {
       "spaceFromTop": 10,

@@ -5,8 +5,8 @@
 #include "LevelLoader.h"
 
 void LevelLoader::load(std::string name) {
-    std::string path("resoruces/level/");
-    path.append(name).append("level");
+    std::string path("resources/level/");
+    path.append(name);
 
     Level tmpLevel;
     std::ifstream reader(path.c_str());
@@ -15,9 +15,12 @@ void LevelLoader::load(std::string name) {
 
     std::string levelName = j.at("levelName");
     float speed = j.at("playerSpeed");
+    float obstacleSpace = j.at("obstacleSpace");
 
     tmpLevel.speed = speed;
     tmpLevel.name = levelName;
+    tmpLevel.obstacleSpace = obstacleSpace;
+
 
     // Load settings from GameConfig
     std::string playerTheme = GameConfig::values.at("playerTheme");
@@ -58,19 +61,22 @@ void LevelLoader::load(std::string name) {
         tmpObstacle.lowerTexturePath = obstacleLowerTexturePath;
         tmpObstacle.initTextures();
 
+
+        auto obstacleKey = j.at("obstacles").at(key);
         // POSITIONS
-        float spaceFromTop = j.at("obstacles").at(key).at("spaceFromTop");
-        float spaceFromBottom = j.at("obstacles").at(key).at("spaceFromBottom");
-        float distanceToNext = j.at("obstacles").at(key).at("distanceToNext");
+        float spaceFromTop = obstacleKey.at("spaceFromTop");
+        float spaceFromBottom = obstacleKey.at("spaceFromBottom");
+        float distanceToNext = obstacleKey.at("distanceToNext");
 
         Vector2 yPosses{
-                spaceFromTop - tmpObstacle.upperPart.texture.height,
+                spaceFromTop - (float) tmpObstacle.upperPart.texture.height,
                 ((float) GameConfig::values.at("height")) - spaceFromBottom
         };
         tmpObstacle.yPosses = yPosses;
 
-        tmpObstacle.posUpper = Vector2{(float) GameConfig::values.at("width"), yPosses.x};
-        tmpObstacle.posLower = Vector2{(float) GameConfig::values.at("width"), yPosses.y};
+        float obstacleWidth = (float) GameConfig::values.at("obstacleWidth");
+        tmpObstacle.posUpper = Vector2{obstacleWidth, yPosses.x};
+        tmpObstacle.posLower = Vector2{obstacleWidth, yPosses.y};
 
         tmpObstacle.sizeUpperPart = Vector2{(float) tmpObstacle.upperPart.texture.width, (float) tmpObstacle.upperPart.texture.height};
         tmpObstacle.sizeLowerPart = Vector2{(float) tmpObstacle.lowerPart.texture.width, (float) tmpObstacle.lowerPart.texture.height};
@@ -80,12 +86,14 @@ void LevelLoader::load(std::string name) {
 
         tmpLevel.obstacles.push_back(tmpObstacle);
     }
+
+    LevelManager::levels.push_back(tmpLevel);
 }
 
 void LevelLoader::load() {
-    std::string path("resoruces/level/");
+    std::string path("resources/level/");
     for(auto &entry : std::filesystem::directory_iterator(path)) {
-        load(path.substr(16));
+        load(entry.path().generic_string().substr(16));
 
         /*
         Level tmpLevel;

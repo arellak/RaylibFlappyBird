@@ -4,6 +4,6 @@
 
 #include "Level.h"
 
-Level::Level() {
-
+void Level::render() {
+    // if(!(obstacle.isInWindow())) {}
 }
